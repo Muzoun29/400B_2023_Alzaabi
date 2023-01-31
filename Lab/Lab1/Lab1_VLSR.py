@@ -203,6 +203,56 @@ MIso260= MassIso(260*u.kpc ,VLSR_Gravity)
 # 
 # How does this compare to estimates of the mass assuming the Isothermal Sphere model at 260 kpc (from your answer above)
 
+"""
+Potential for a Hernquist profile 
+Phi = -GM/(r+a)
+
+using the potential for a Hernquist profile  , the equation for the escape speed becomes :
+    vesc**2=2*G*M/(r+a)
+Rearange this for M (Mass)
+     M=Vesc**2/2/G*(r+a)
+    
+"""
+def MassFromVesc( vesc , r , a ) :
+    """
+    This function determine the total mass needed for a given escape speed assuming a Hernquist profile 
+    for the dark matter  halo 
+         M=Vesc**2*(r+a)/2/G
+    INPUT 
+    Vesc : 'astropy quantity ' --> Escape epeed (or speed of satelite) in km/s
+    r : 'astropy quantity ' --> dist. from the Galactic center (kpc)
+    a : 'astropy quantity ' --> Hernquist scale lengh (kpc)
+    
+    OUTPUTS : 
+        M : 'astropy quantity ' --> Total Mass witin r in Msun 
+    """
+
+    vescKpcGyr = vesc.to(u.kpc/u.Gyr) # convert to kpc/Gyr
+    M=vescKpcGyr**2/2/Grav*(r+a) # reauire mass
+    
+    return M
+
+VLeoI = 196*u.km/u.s # speed of Leo I from sohn 2013 ApJ 768
+a = 30*u.kpc # scale raduis for the Hernquist Halo 
+r = 260*u.kpc # Galactrocentrec distance of Leo I 
+
+#Mass compute  needed to keep Leo I Bound 
+
+MLeoI = MassFromVesc(VLeoI, r, a)
+
+print (MLeoI)
+
+print (f"{MLeoI:.2e}")
+
+
+Difff=MIso260/MLeoI
+
+print (Difff)
+
+
+
+
+
 
 
 
