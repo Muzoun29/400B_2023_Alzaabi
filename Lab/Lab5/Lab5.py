@@ -1,4 +1,10 @@
+"""
+Lab5
 
+Muzoun Alzaabi
+ASTR 400B 
+
+"""
 # # Lab 5 ASTR 400B 
 
 # Import Modules 
@@ -24,10 +30,12 @@ import astropy.units as u
 # 
 # The system Willman I is observed with: $\sigma = 4.3$ km/s, $R_e = 25$ pc, $L_v = 10^3 L_\odot$
 
+#Willman I is a galaxy 
 
 # Gravitational Constant in the desired units
 # kpc^3/Gyr^2/Msun
 Grav = const.G.to(u.kpc**3/u.Gyr**2/u.Msun)
+
 
 
 
@@ -49,6 +57,20 @@ def WolfMass(sigma, re):
     sigmaKpcGyr = sigma.to(u.kpc/u.Gyr)
     mWolf = 4/Grav*sigmaKpcGyr**2*re
     return mWolf
+
+# Observational values for 47 Tuc
+
+"""Note to self : Check the recording:"""
+    
+# Calculate mass
+m_47Tuc = WolfMass(17.3*u.km/u.s, 0.5*u.pc)
+print(m_47Tuc)
+
+# Observational values for Willman I
+# Calculate mass
+m_WillmanI = WolfMass(4.3*u.km/u.s, 25*u.pc)
+print(m_WillmanI)
+
 
 
 
@@ -73,7 +95,7 @@ def WolfMass(sigma, re):
 # 
 # Modify the class below by adding a function called `StellarMass` that uses the `SHMratio` function and returns the stellar mass.
 
-# In[ ]:
+#
 
 
 class AbundanceMatching:
@@ -153,8 +175,21 @@ class AbundanceMatching:
         return SHMratio
     
     
-# Q1: add a function to the class that takes the SHM ratio and returns 
+# Q1: add a method to the class that takes the SHM ratio and returns 
 # The stellar mass 
+    def StellarMass(self) :
+        """
+        Method to compute the stelar mass of Galaxy 
+        using  the equation 2 from Moster + 2013
+
+        Returns : 
+            outputs : 
+                float , stellar mass in M_sun
+        -------
+        None.
+
+        """
+        return self.mhalo*self.SHMratio()
 
 
 # # Part C : Plot the Moster Relation
@@ -172,7 +207,16 @@ mh = np.logspace(10,15,1000) # Logarithmically spaced array
 
 
 # Define Instances of the Class for each redshift
-MosterZ0 = AbundanceMatching(mh,0)
+
+# Plot this for z=0, 0.5, 1, 2 
+MosterZ0 = AbundanceMatching(mh,0)          #z=0
+MosterZ_05 = AbundanceMatching(mh,0.5)      #z=.5
+MosterZ1 = AbundanceMatching(mh,1)          #z=1
+MosterZ2 = AbundanceMatching(mh,2)          #z=2
+
+
+
+
 
 
 
@@ -191,6 +235,16 @@ plt.plot(np.log10(mh), np.log10(MosterZ0.StellarMass()),
          linewidth = 5, label='z=0')
 
 # Continue plotting for the other redshifts here
+plt.plot(np.log10(mh), np.log10(MosterZ_05.StellarMass()),
+         linewidth = 5, label='z=0.5')
+
+plt.plot(np.log10(mh), np.log10(MosterZ1.StellarMass()),
+         linewidth = 5, label='z=1')
+
+plt.plot(np.log10(mh), np.log10(MosterZ2.StellarMass()),
+         linewidth = 5, label='z=2')
+
+
 
 
 
@@ -203,18 +257,42 @@ plt.ylabel('log (m$_\star$/M$_\odot$)', fontsize=22)
 plt.legend(loc='lower right',fontsize='x-large')
 
 # save the file 
-plt.savefig(AbundanceMatching_Lab5.png)
+plt.savefig("AbundanceMatching_Lab5.png")
 
 
 # # Part D
 # 
 # # Q1
 # 
-# In traditional models of the Magellanic Clouds (prior to 2010), the LMC is thought to have a halo mass of order $3 \times 10^{10}$ M$_\odot$.  According to LCDM theory, what should be the stellar mass of such a halo?  
-# 
-# How does this compare against the actual observed stellar mass of the LMC at the present day of $3 \times 10^9$ M$_\odot$ ? 
+# In traditional models of the Magellanic Clouds (prior to 2010), 
+#the LMC is thought to have a halo mass of order $3 \times 10^{10}$ M$_\odot$. 
+# According to LCDM theory, what should be the stellar mass of such a halo?  
+
+# How does this compare against the actual observed stellar mass of the
+# LMC at the present day of $3 \times 10^9$ M$_\odot$ ? 
 # 
 # What is the $\Lambda$CDM expected halo mass? What is the origin of any discrepancy? 
+
+"""
+Using stellar mass function defined 
+"""
+haloLMC1 = 3e10 #Original LMC Halo mass
+LMC1 = AbundanceMatching(haloLMC1, 0)
+
+LMC1Star = LMC1.StellarMass()
+
+print(LMC1Star)
+print(3e9/LMC1Star) 
+
+haloLMC2 = 1.647e11
+LMC2 = AbundanceMatching(haloLMC2, 0)
+
+LMC2Star = LMC2.StellarMass()
+
+print(LMC2Star)
+print(3e9/LMC2Star) 
+
+
 
 
 
@@ -225,8 +303,12 @@ plt.savefig(AbundanceMatching_Lab5.png)
 # What is the expected stellar mass of an L* galaxy at z=0? 
 # 
 # What is the expected stellar mass of an L* galaxy at z = 2?  
+print (f'Log M1 , characteristic halo mass at z=0 : {MosterZ0.logM1()}')
+MstarZ0 = AbundanceMatching(10**MosterZ0.logM1(), 0)
+print(f'Stellar Mass of an L* Galaxy at z=0 : {np.around(MstarZ0.StellarMass()/1e10,2)}x 1e10Msun')
 
 
-
-
+print (f'Log M1 , characteristic halo mass at z=1 : {MosterZ1.logM1()}')
+MstarZ1 = AbundanceMatching(10**MosterZ1.logM1(), 1)
+print(f'Stellar Mass of an L* Galaxy at z=1 : {np.around(MstarZ1.StellarMass()/1e10,2)}x 1e10Msun')
 
