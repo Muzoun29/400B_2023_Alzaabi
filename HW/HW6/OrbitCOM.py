@@ -86,13 +86,13 @@ def OrbitCOM (galaxy, start, end, n):
     
     # generate the snapshot id sequence 
     # it is always a good idea to also check if the input is eligible (not required)
-    snap_ids = np.arange(start, end+1 , n )
+    snap_id_seq = np.arange(start, end+1 , n )
     
     # initialize the array for orbital info: t, x, y, z, vx, vy, vz of COM
-    orbit = np.zeros([snap_ids.size, 7])
+    orbit = np.zeros([snap_id_seq.size, 7])
     
     # a for loop 
-    for  i, snap_id in enumerate(snap_ids):# loop over files
+    for  i, snap_id in enumerate(snap_id_seq):# loop over files
         
         # compose the data filename (be careful about the folder)
         
