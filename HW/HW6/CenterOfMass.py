@@ -4,14 +4,7 @@
 # Center of Mass Position and Velocity
 #  Solutions: G. Besla, R. Li, H. Foote
 
-"""
-Modified Version for HW6 
-where you modify COM P so that it now takes an input volDec that defines the amount by which RMAX is decreased.
- Replace “RMAX/2” with “RMAX/volDec” everywhere it appears.
- 
-Modfied by Muzoun Alzaabi 
- 
-"""
+
 
 # import modules
 import numpy as np
@@ -91,7 +84,7 @@ class CenterOfMass:
         return a_com, b_com, c_com
     
     
-    def COM_P(self, delta , VolDec):
+    def COM_P(self, delta):
         '''Method to compute the position of the center of mass of the galaxy 
         using the shrinking-sphere method.
 
@@ -129,7 +122,7 @@ class CenterOfMass:
 
         # find the max 3D distance of all particles from the guessed COM                                               
         # will re-start at half that radius (reduced radius)                                                           
-        r_max = max(r_new)/ VolDec
+        r_max = max(r_new)/2.0
         
         # pick an initial value for the change in COM position                                                      
         # between the first guess above and the new one computed from half that volume
@@ -168,7 +161,7 @@ class CenterOfMass:
             # Before loop continues, reset : r_max, particle separations and COM                                        
 
             # reduce the volume by a factor of 2 again                                                                 
-            r_max /= VolDec
+            r_max /= 2.0
             # check this.                                                                                              
             #print ("maxR", r_max)                                                                                      
 
