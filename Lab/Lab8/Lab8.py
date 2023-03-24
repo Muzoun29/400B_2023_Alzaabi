@@ -4,7 +4,6 @@ Muzoun Alzaabi
 
 Mar 21 , 2022 
 
-
 """
 
 # # Lab 8 : Star Formation 
@@ -182,6 +181,7 @@ print(10**SFRMainSequence(MW_disk, 1))
 
 
 # create an array of stellar masses
+Mass = np.linspace(1e9 , 1e12)
 
 
 
@@ -191,6 +191,9 @@ fig = plt.figure(figsize=(8,8), dpi=500)
 ax = plt.subplot(111)
 
 # add log log plots
+plt.loglog(Mass, 10**SFRMainSequence(Mass, 0) , color='black' , linewidth=3 , label='z=0' )
+plt.loglog(Mass, 10**SFRMainSequence(Mass, 1) , color='pink' , linewidth=3 , label='z=0' )
+plt.loglog(Mass, 10**SFRMainSequence(Mass, 12) , color='Green' , linewidth=3 , label='z=0' )
 
 
 # Add axis labels
@@ -223,21 +226,26 @@ plt.show()
 
 
 # normal galaxies 
-
+TIR_Normal = 1e10*LsunErgS
+print(10**StarFormationRate(TIR_Normal, 'TIR'))
 
 
 
 # LIRGs  
-
+TIR_LIRG = 1e11*LsunErgS
+print(10**StarFormationRate(TIR_LIRG, 'TIR'))
 
 
 
 # ULIRGs
-
+TIR_ULIRG = 1e12*LsunErgS
+print(10**StarFormationRate(TIR_ULIRG, 'TIR'))
 
 
 
 # HLIRGs
+TIR_HLIRG = 1e13*LsunErgS
+print(10**StarFormationRate(TIR_HLIRG, 'TIR'))
 
 
 
