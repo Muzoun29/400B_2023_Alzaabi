@@ -24,9 +24,6 @@ from ReadFile import Read
 from CenterOfMass2 import CenterOfMass
 from GalaxyMass import ComponentMass
 
-
-
-
 # Define class "TidalStreams" 
 #which performs simulations of the merger 
 #and calculates the positions and properties of M33's tidal streams.
@@ -40,8 +37,6 @@ class TidalStreams :
         ----------
         filename : `str`
             Name of the file in which to store the orbit
-
-
         """
         # Constants and units    
         # store the output file name
@@ -51,8 +46,8 @@ class TidalStreams :
         com_M31 = CenterOfMass('M31_000.txt', 2) # COM object for M31
         com_M33 = CenterOfMass('M33_000.txt', 2) # COM object for M33
         com_MW = CenterOfMass('MW_000.txt', 2) # COM object for MW
-       
         
+        #initial conditions for M33-MW and M31-M33 systems
         
         # COM Pos and Velocity for M31, MW, M33
         # For MW and M31 delta = 0.1 and VelDec = 2
@@ -79,7 +74,8 @@ class TidalStreams :
     
         # Define time array
         self.t = np.linspace(0, 6, 200) * u.Gyr
-    
+        
+        #Using the ComponentMass function
         # Calculate the total mass of each galaxy
         M_M31 = ComponentMass('M31_000.txt', 2)
         M_M33 = ComponentMass('M33_000.txt', 2)
@@ -89,11 +85,11 @@ class TidalStreams :
         M_enclosed_M31_M33 = M_M31 + M_M33
         M_enclosed_MW_M33 = M_MW + M_M33
         
-        
-        self.M31_M33_jacobi_radius = self.calc_Jacobi_radius(r0_M31_M33, M_enclosed_M31_M33, M_M33)
-        self.MW_M33_jacobi_radius = self.calc_Jacobi_radius(r0_M33_MW, M_enclosed_MW_M33, M_M33)
-
-    def calc_Jacobi_radius(self,r, M_host, M_satellite):
+        # Calculate the Jacobi radius at each time step for M31-M33 and MW-M33 systems
+        self.M31_M33_jacobi_radius = [self.calc_Jacobi_radius(r0_M31_M33, M_enclosed_M31_M33, M_M33) for _ in self.t]
+        self.MW_M33_jacobi_radius = [self.calc_Jacobi_radius(r0_M33_MW, M_enclosed_MW_M33, M_M33) for _ in self.t]
+    
+    def calc_Jacobi_radius(self, r, M_host, M_satellite):
         """
         Calculate the Jacobi radius of the system at each time step.
     
@@ -102,19 +98,22 @@ class TidalStreams :
         r : array
             Separation vector between two galaxies in kpc
         M_host : float
-            Mass of the host galaxy in 1e10 solar masses
+            Mass of the host galaxy ( MW and M31 )
         M_satellite : float
-            Mass of the satellite galaxy in 1e10 solar masses
+            Mass of the satellite galaxy in (M33)
+            
     
         Returns
         -------
         R_jacobi : array
             Jacobi radius of the system at each time step
         """
+    
+        #Msat is M33, Mhost is enclosed mass of MW and M31
+        
         return r * (M_satellite / (2 * M_host))**(1/3)
-
-
-#Plot the Jacobi radius as a function of time for the M31-M33 and MW-M33 systems.    
+    
+    # Plot the Jacobi radius as a function of time for the M31-M33 and MW-M33 systems.    
     def plot_jacobi_radius(self):
         """
         Plot the Jacobi radius as a function of time for the M31-M33 and MW-M33 systems.
@@ -128,9 +127,12 @@ class TidalStreams :
         
         plt.legend()
         plt.show()
-    
-   
-#Create an instance of the TidalStreams class and plot the Jacobi radius
+        
+        
+        
+
+        
+        
 tidal_streams = TidalStreams("TidalStreams.txt")
 tidal_streams.plot_jacobi_radius()
 
@@ -141,17 +143,21 @@ tidal_streams.plot_jacobi_radius()
 #2nd plot 
 
 
-    
-#How the mass of M33 changes over time, 
-#which can give insight into how the tidal streams form.
+# plan is to investigate how the mass of M33 changes over time,
+# providing insight into how the tidal streams form.
 
+
+#implement the mass change calculation and 
+#analyze the impact of mass change on the formation of tidal streams in M33.
+
+    
 #IN understand how and when M33's streams form
 
 #Code initiate 
 
 #def calculate_mass_change(self, snapshots):
 #Calculate the mass change of M33 over time.
-#This include an array of snapshot numbers for the simulatio
+#This include an array of snapshot numbers for the simulation
 
 
 
