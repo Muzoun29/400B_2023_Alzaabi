@@ -1,27 +1,13 @@
 """
-Muzoun Alzaabi 
-ASTR400B
+
 
 Research Assignment 3 
 Mar 30 , 2023 
-
-
 
 *This is initial code set 
 
 Topic : Tidal Debris from M33 : Stellar Streams of M33
 
-
-Question : 
-    how/when do M33’s streams form? 
-    what is the Jacobi radius and how does this change in time?
-    
-    
-This code will analyze the formation of M33's stellar streams 
-and the change in the Jacobi radius over time
-
-Using observational data for M33's Center of Mass position and velocity
-and then calculate the Jacobi radius at some points in time.
 
 """
 
@@ -46,25 +32,26 @@ from GalaxyMass import ComponentMass
 
 
 
-#Resource : G. Besla & H. Foote + 2023   #    HW7 & Lab 3 
 
+
+
+# Define class "TidalStreams" 
+#which performs simulations of the merger 
+#and calculates the positions and properties of M33's tidal streams.
 
 class TidalStreams : 
-    """This class to perform simulations of the merger and 
-    calculate the positions and properties of M33's tidal streams"""
+    """This class to perform simulations of the merger """
     
     def __init__(self, filename):
         """
-        Parameters
+        Initialize the TidalStreams class.
         ----------
         filename : `str`
             Name of the file in which to store the orbit
 
 
         """
-        # get the gravitational constant (the value is 4.498502151575286e-06)
-        self.G = const.G.to(u.kpc**3/u.Msun/u.Gyr**2).value
-        
+        # Constants and units    
         # store the output file name
         self.filename = filename
         
@@ -89,15 +76,23 @@ class TidalStreams :
         com_v_MW = com_MW.COM_V(com_p_MW[0], com_p_MW[1], com_p_MW[2])
         
 
+
 #INCLUDE MW AS Stellar Streams of M33 (during and after the MW-M31 merger)
-#Mtwo systems M31-M33 and MW-M33 system
-# set up initial conditions (MW pos and velocity relative to M31)
-        #self.r0 = (com_p_MW - com_p_M31).value # separation vector in kpc
-        #self.v0 = (com_v_MW - com_v_M31).value # relative velocity in km/s """
+#CONFUSE 
+ 
+        # Set up initial conditions for 
+        r0_M33_MW = (com_p_M33 - com_p_MW).value  # separation vector in kpc
+        v0_M33_MW = (com_v_M33 - com_v_MW).value  # relative velocity in km/s
         
+        r0_M31_M33 = (com_p_M31 - com_p_M33).value  # separation vector in kpc
+        v0_M31_M33 = (com_v_M31 - com_v_M33).value  # relative velocity in km/s
+
+        # Define time array
+        self.t = np.linspace("***")* u.Gyr
+
+            
         
-        
-        
+            
         
         # Need to Define Function to Calculate total Mass of each Galaxy 
         
@@ -113,10 +108,23 @@ class TidalStreams :
         
         
         
-        # Define function to Calculate the Jacobi Radius of M31-M33 and MW-M33 system
-        #Recall  # Rj=r*(Msat/2/Mhost)**(1/3)
-                    #Where Msat is M33
-                    #Mhost enclose mass of MW and M31
+# Recall  Rj = r * (Msat / (2 * Mhost))**(1/3)
+# Where Msat is M33 and Mhost is the enclosed mass of MW and M31
+
+
+#Jacobi radius imp. to identify the tidal debris from M33 
+#that has been stripped by the gravitational interaction with MW,M33.
+    def calc_Jacobi_radius(self, r_M31_M33, r_MW_M33):"""
+    Calculate the Jacobi radius of M31-M33 and MW-M33 system at each time step.
+
+"""
+ 
+
+    # Calculate the Jacobi radius of M31-M33 and MW-M33 system at each time step
+        #M31_M33 =
+        #MW_M33 = 
+        
+
 
 
 
