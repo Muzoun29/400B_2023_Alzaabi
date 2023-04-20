@@ -3,9 +3,7 @@ Lab 11
 ASTR 400B
 Muzoun Alzaabi
 
-
-
-
+Updated in April 20 ,23
 
 """
 # # In Class Lab 11 Template
@@ -417,7 +415,7 @@ class CosmologicalTools:
     # Input:    Redshift emitted (ze) 
     # Output:   DL  in Mpc
         """ Method that computes the Luminosity Distance to an object at some redshift (ze)
-               DL = DC*(1+zobs)
+               DL = DC*(1+ze)
             
         PARAMETERS
         --------- 
@@ -430,10 +428,11 @@ class CosmologicalTools:
             Luminosity Distance (Mpc)
         """
 
-        # FILL THIS IN
+        zo = 0 
+        DL = self.ComovingDistance(zo, ze)*(1+ze)
         
         
-        return 
+        return DL
     
 
     # Question 4 A)
@@ -457,8 +456,10 @@ class CosmologicalTools:
         """
     
         #  FILL THIS IN
+        zo = 0
+        DA = self.ComovingDistance(zo, ze)/(1+ze)
         
-        return      
+        return DA
     
     
     # Question 4 B) 
@@ -486,8 +487,10 @@ class CosmologicalTools:
         angleRad = (angle*u.arcsec).to(u.rad)
     
         # FILL THIS IN
+        
+        size = self.AngularDiameterDistance(ze).to(u.kpc)*angleRad.value
      
-        return 
+        return size
     
     
 
@@ -748,25 +751,28 @@ if __name__ == '__main__':
     # Question 3 B) 
 
 
-
+mapp =  25.1 
+Mabs =  -19.3 
 
     # What is the Luminosity Distance? 
     # m-M = 5*log(DL/Mpc) + 25
-
+DLSne = np.around(10**( (mapp - Mabs -25.0)/5),1) * u.Mpc
+print(DLSne)
 
 
 
     # Now reverse engineer the problem. What redshift gives you the computed Luminosity Distance? 
     # in reality the redshift is determined by identifying the redshift of the host.  
+print (BenchMark.LuminosityDistance(1.0945))
 
-
+zSNe= 1.0945
 
 
     # What is the proper distance to this supernova given our current rate of expansion? 
-
+print(BenchMark.ProperDistance(0, zSNe))
+print(BenchMark.ComovingDistance(0, zSNe))
 
     # ## Question 4 C) 
-
 
 
     # Question 4 C)  
@@ -774,6 +780,8 @@ if __name__ == '__main__':
     # Angle = Size/DA
     # What is the separation between two galaxies separated by 1 arcsec at z=1 in the Benchmark Cosmology
 
+rp = np.around(BenchMark.Size(1, 1),1)
+print(rp)
 
 
 
